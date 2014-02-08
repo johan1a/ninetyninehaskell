@@ -59,3 +59,23 @@ encodeDirect = map (\x -> if (length x) == 1 then Single (head x) else Multiple 
 
 dupli :: [a] -> [a]
 dupli = concat . map (\x ->replicate 2 x)
+
+repli :: [a] -> Int -> [a]
+repli l k = concat $ map (\x ->replicate k x) l
+
+dropEvery :: [a] -> Int -> [a]
+dropEvery = dropEvery' 1 
+
+dropEvery' :: Int -> [a] -> Int -> [a]
+dropEvery' a [] b = []
+dropEvery' a (x:xs) b
+	| a `mod` b == 0 = dropEvery' (a+1) (xs) b
+	| otherwise =  x:(dropEvery' (a+1) (xs) b)
+
+split :: [a] -> Int -> ([a],[a])
+split x k = split' ([],x) k 
+
+split' :: ([a],[a]) -> Int -> ([a],[a])
+split' (f,(x:xs)) k 
+	| k == 0 = (f,(x:xs)) 
+	| otherwise = split' (f ++ [x], xs) (k-1)
