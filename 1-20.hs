@@ -79,3 +79,6 @@ split' :: ([a],[a]) -> Int -> ([a],[a])
 split' (f,(x:xs)) k 
 	| k == 0 = (f,(x:xs)) 
 	| otherwise = split' (f ++ [x], xs) (k-1)
+
+slice :: [a] -> Int -> Int -> [a]
+slice x f l = take (l-2) $ drop (f-1) x
