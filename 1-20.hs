@@ -37,12 +37,19 @@ pack = group
 encode :: Eq a => [a] ->[(Int,a)]
 encode = map (\t -> (length t,head t)) . pack
 
-data Multiple a = Single a | Multiple Int a 
+data ListItem a = Single a | Multiple Int a 
 	deriving (Show)
-	
-encodeModified :: Eq a=> [a] -> [Multiple a]
+
+encodeModified :: Eq a => [a] -> [ListItem a]
 encodeModified = map encodeModified' . encode 
 
 encodeModified' (k,x) 
 	| k == 1 = Single x
-	| otherwise = Multiple k x 
+	| otherwise = Multiple k x
+
+decodeModified :: Eq a => [ListItem a] -> [a]
+decodeModified = concat . map decodeModified' 
+
+decodeModified' :: (ListItem a) -> [a]
+decodeModified' (Multiple k x) = replicate k x 
+decodeModified' (Single x) = [x]
