@@ -53,3 +53,9 @@ decodeModified = concat . map decodeModified'
 decodeModified' :: (ListItem a) -> [a]
 decodeModified' (Multiple k x) = replicate k x 
 decodeModified' (Single x) = [x]
+
+encodeDirect :: Eq a => [a] -> [ListItem a]
+encodeDirect = map (\x -> if (length x) == 1 then Single (head x) else Multiple (length x) (head x)) . group
+
+dupli :: [a] -> [a]
+dupli = concat . map (\x ->replicate 2 x)
